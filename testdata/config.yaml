@@ -1,0 +1,9 @@
+input:
+  file: core-public-organisation-ap.jsonld
+  namespace:
+    m8g: 'http://data.europa.eu/m8g/'
+response:
+  types:
+    - 'application/n-triples'
+    - 'text/turtle'
+    - 'application/rdf+xml'
