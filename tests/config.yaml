@@ -1,5 +1,5 @@
 input:
-  file: core-public-organisation-ap.jsonld
+  folder: testdata
   namespace:
     m8g: 'http://data.europa.eu/m8g/'
 response:
