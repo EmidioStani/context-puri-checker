@@ -2,6 +2,7 @@ input:
   folder: testdata
   namespace:
     m8g: 'http://data.europa.eu/m8g/'
+    fwd: 'https://semiceu.github.io/'
 response:
   types:
     - 'application/n-triples'

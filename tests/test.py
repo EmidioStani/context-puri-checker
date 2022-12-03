@@ -39,7 +39,7 @@ def read_files(folder):
         filepath = os.path.join(folder, filename)
         # checking if it is a file
         if os.path.isfile(filepath):
-            print("reading: " + filepath)
+            # print("reading: " + filepath)
             file = open(filepath)
             data = json.load(file)['@context']
             temp_file_list = read_test_data_from_context(data)
@@ -55,7 +55,7 @@ def uri_in_data(list, uri):
     list_tuple_containing_uri = []
     for k, v in list:
         if (v == uri):
-            print(v)
+            # print(v)
             list_tuple_containing_uri.append(tuple([k,v]))
     if(len(list_tuple_containing_uri) > 1):
         return 1
@@ -72,19 +72,24 @@ def read_m8g_data_from_context(folder):
         v = tuple[1]
         if v.startswith(namespace):
             test_data.append(tuple)
-    print("found")
-    print(test_data)
+    # print("found")
+    # print(test_data)
     return test_data
 
 def get_supported_response_types():
     return config['response']['types']
 
-read_m8g_data_from_context(folder)
+# read_m8g_data_from_context(folder)
 
 @pytest.mark.parametrize("label, uri", read_files(folder))
 def test_uri_not_found(label, uri):
     response = requests.get(uri)
-    assert response.status_code == 200
+    # print(response.history)
+    # print(response.status_code)
+    if (uri.startswith(config['input']['namespace']['m8g'])):
+        assert response.url.startswith(config['input']['namespace']['fwd'])
+    else:
+        assert response.status_code == 200
 
 @pytest.mark.parametrize("label, uri", read_files(folder))
 def test_duplicate_uri(label, uri):
@@ -94,7 +99,7 @@ def test_duplicate_uri(label, uri):
 @pytest.mark.parametrize("label, uri",  read_m8g_data_from_context(folder))
 @pytest.mark.parametrize("response_type",  get_supported_response_types())
 def test_rdf_not_found(label, uri, response_type):
-    print("check" + uri)
+    print("check " + uri)
     headers = {'Accept': response_type}
     response = requests.get(uri, headers=headers)
     assert response.status_code == 200
