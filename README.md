@@ -1,6 +1,6 @@
 # context-puri-checker
 
-Execute with command
+## Description
 
 This script is pytest suite that takes as input a set of json-ld context files (stored in the testdata directory) from which it extract all the uris and execute the following tests:
 
@@ -8,4 +8,16 @@ This script is pytest suite that takes as input a set of json-ld context files (
 2) test_duplicate_uri, to test if 2 properties in the json-ld coxtext have the same URI
 3) test_rdf_not_found, to test the existence of the RDF expressions for each URI, the list of RDF expression is indicated in the configuration ifle.   
 
+## Setup
+
+Install python with the libraries specified in the requirements.txt
+
+## Execution
+
+Execute with command:
+
 pytest .\tests\test.py -s --excelreport=report.xlsx
+
+## License
+
+This software is licensed under CC-BY
