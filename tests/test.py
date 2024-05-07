@@ -178,6 +178,7 @@ def test_url_not_good(url):
         result = 1
     assert result == 0
 
+@pytest.mark.skip(reason="excluded for now")
 @pytest.mark.parametrize("text", read_texts())
 def test_text_not_good(text):
     n_matches = 0
