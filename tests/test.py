@@ -128,7 +128,7 @@ def read_texts():
 
 @pytest.mark.parametrize("label, uri", read_files(folder))
 def test_uri_not_found(label, uri):
-    response = requests.get(uri)
+    response = requests.get(uri,  verify=False)
     # print(response.history)
     # print(response.status_code)
     if (uri.startswith(config['input']['namespace']['m8g'])):
@@ -146,7 +146,7 @@ def test_duplicate_uri(label, uri):
 def test_rdf_not_found(label, uri, response_type):
     # print("check " + uri)
     headers = {'Accept': response_type}
-    response = requests.get(uri, headers=headers)
+    response = requests.get(uri, headers=headers, verify=False)
     assert response.status_code == 200
     content_type = response.headers['Content-Type']
     assert content_type.startswith(response_type)
@@ -165,7 +165,7 @@ def test_hyperlink_not_found(url):
         "Cache-Control" : "no-cache",
         "User-Agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:106.0) Gecko/20100101 Firefox/106.0"
     }
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=headers, verify=False)
     # print(response.history)
     # print(response.status_code)
     assert response.status_code == 200

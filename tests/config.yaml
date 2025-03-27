@@ -4,15 +4,7 @@ input:
     m8g: 'http://data.europa.eu/m8g/'
     fwd: 'https://semiceu.github.io/'
   specs:
-    - https://semiceu.github.io/Core-Business-Vocabulary/releases/2.2.0/
-    - https://semiceu.github.io/Core-Location-Vocabulary/releases/2.1.0/
-    - https://semiceu.github.io/Core-Public-Event-Vocabulary/releases/1.1.0/
-    - https://semiceu.github.io/CCCEV/releases/2.1.0/
-    - https://semiceu.github.io/CPSV-AP/releases/3.2.0/
-    - https://semiceu.github.io/Core-Person-Vocabulary/releases/2.1.1/
-    - https://semiceu.github.io/CPOV/releases/2.1.1/
-    - https://semiceu.github.io/ADMS/releases/2.00/
-    - https://semiceu.github.io/DCAT-AP/releases/3.0.0/
+    - https://semiceu.github.io/IOPA/releases/0.0.1/
 response:
   types:
     - 'application/n-triples'
