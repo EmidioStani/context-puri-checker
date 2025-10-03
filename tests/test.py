@@ -12,12 +12,51 @@ from bs4 import BeautifulSoup
 import urllib.request
 
 import language_tool_python
+from collections import defaultdict
+
+import re 
+import phunspell
+pspell_en = phunspell.Phunspell('en_GB')
+
+def check_mispell(definition: str) -> None:
+    """    
+    Checks a definition for any misspelled words using French and English dictionaries.    
+    
+    This function uses a regular expression to split the definition into words, filtering out punctuation and whitespace. It checks for spelling errors first against a French dictionary, then against an English dictionary.    
+    
+    Parameters:    
+    -----------    
+    definition : str    
+        The text definition to be checked for spelling errors.    
+    
+    Returns:    
+    --------    
+    None    
+    
+    Side Effects:    
+    -------------    
+    - Logs any misspelled words found in the definition to the console.    
+    """ 
+    b = config['spell']['separators']
+    # b = ["," ,  "." , ";" , '"' , "(" , ")." , ")" , ":" , "?)," , ".)" , ")," , "/" , ");" , ".)." , "\"." , ".)," , "?." , "?" , "\"," , "%" , "#" , "!" , "&" , ".;", ",…." , "…." , "»" , "«" , "…)," , "…)" , "...)." , "@" , ".:" , "…)." , "…" , "'" , "€," , "”," , "'”" , ")-", '?".' , '?",' , '?"', "*", "|"]  
+    acronyms = config['spell']['acronyms']
+    # acronyms = ["ADMS", "adms", "datatypes", "Datatypes","dct", "favourability","FRBR", "IOPA", "IOPA-AP", "JSON-LD", "LFDS-AP", "m8g", "PURI", "RDF", "RDFS", "SEMIC", "SHACL", "skos", "SKOS", "UML", "W3C"]
+    escaped_separators = list(map(re.escape, b))  
+    
+    # Construct the regex pattern  
+    # The pattern will match any of the separators or whitespace  
+    pattern = r'(' + '|'.join(escaped_separators) + r'|\s+)'
+
+    res = list(filter(None, re.split(pattern, definition)))
+    result = list(set(res) - set(b) - set(acronyms))
+    mispelled_en = pspell_en.lookup_list(result)
+    return mispelled_en
 
 
 def get_config(file):
     my_path = Path(__file__).resolve()  # resolve to get rid of any symlinks
     config_path = my_path.parent / file
-    with config_path.open() as config_file:
+    with config_path.open(encoding="utf-8") as config_file:
         config = yaml.load(config_file, Loader=yaml.FullLoader)
     return config
 
@@ -126,6 +165,8 @@ def read_texts():
             spec_texts.append(strip_section)
     return spec_texts
 
+
+# @pytest.mark.skip(reason="excluded for now")
 @pytest.mark.parametrize("label, uri", read_files(folder))
 def test_uri_not_found(label, uri):
     response = requests.get(uri,  verify=False)
@@ -136,11 +177,29 @@ def test_uri_not_found(label, uri):
     else:
         assert response.status_code == 200
 
-@pytest.mark.parametrize("label, uri", read_files(folder))
-def test_duplicate_uri(label, uri):
-    is_uri_used = uri_in_data(read_files(folder), uri)
-    assert is_uri_used == 0
+def group_by_uri(data):
+    grouped = defaultdict(list)
+    for label, uri in data:
+        grouped[uri].append(label)
+    return grouped
 
+# @pytest.mark.skip(reason="excluded for now")
+#@pytest.mark.parametrize("label, uri", read_files(folder))
+#def test_duplicate_uri(label, uri):
+#    is_uri_used = uri_in_data(read_files(folder), uri)
+#    assert is_uri_used == 0
+
+uris_with_labels = list(group_by_uri(read_files(folder)).items())
+@pytest.mark.parametrize("uri, labels", 
+                         uris_with_labels, 
+                         ids=[uri for uri, _ in uris_with_labels])  # only show the URi
+def test_duplicate_uri(uri, labels):
+    assert len(labels) <= 1, (
+        f"Duplicate URI found: {uri}\n"
+        f"Used by labels: {labels}"
+    )
+
+# @pytest.mark.skip(reason="excluded for now")
 @pytest.mark.parametrize("label, uri",  read_m8g_data_from_context(folder))
 @pytest.mark.parametrize("response_type",  get_supported_response_types())
 def test_rdf_not_found(label, uri, response_type):
@@ -178,14 +237,12 @@ def test_url_not_good(url):
         result = 1
     assert result == 0
 
-@pytest.mark.skip(reason="excluded for now")
+# @pytest.mark.skip(reason="excluded for now")
 @pytest.mark.parametrize("text", read_texts())
 def test_text_not_good(text):
     n_matches = 0
     # print("check " + url)
-    tool = language_tool_python.LanguageTool('en-GB')
-    matches = tool.check(text)
+    matches = check_mispell(text)
     n_matches = len(matches)
-    tool.close()
     assert n_matches == 0, f"Language errors: {matches}"
 

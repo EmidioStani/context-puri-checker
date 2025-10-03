@@ -1,13 +1,92 @@
 input:
   folder: testdata
   namespace:
-    m8g: 'http://data.europa.eu/m8g/'
+    # m8g can be replaced by the namespace under control (to test content negotiaion ) 
+    m8g: 'http://data.europa.eu/it6/'
+    # test that the terms under the namespace under control redirect to the fwd url
     fwd: 'https://semiceu.github.io/'
   specs:
-    - https://semiceu.github.io/IOPA/releases/0.0.1/
+    - https://semiceu.github.io/uri.semic.eu-generated/MLDCAT-AP/releases/3.0.0/
 response:
   types:
     - 'application/n-triples'
     - 'text/turtle'
     - 'application/rdf+xml'
     - 'application/ld+json'
+spell:
+  separators:
+    - ","
+    - "."
+    - ";"
+    - '"'
+    - "("
+    - ")."
+    - ")"
+    - ":"
+    - "?),"
+    - ".)"
+    - "),"
+    - "/"
+    - ");"
+    - ".)."
+    - "\"."
+    - ".),"
+    - "?."
+    - "?"
+    - "\","
+    - "%"
+    - "#"
+    - "!"
+    - "&"
+    - ".;"
+    - ",…."
+    - "…."
+    - "»"
+    - "«"
+    - "…),"
+    - "…)"
+    - "...)."
+    - "@"
+    - ".:"
+    - "…)."
+    - "…"
+    - "'"
+    - "€,"
+    - "”,"
+    - "'”"
+    - ")-"
+    - '?".'
+    - '?",'
+    - '?"'
+    - "*"
+    - "|"
+  acronyms:
+    - "ADMS"
+    - "adms"
+    - "CoP"
+    - "DCAT"
+    - "DCAT-AP"
+    - "datatypes"
+    - "Datatypes"
+    - "dct"
+    - "favourability"
+    - "FRBR"
+    - "IOPA"
+    - "IOPA-AP"
+    - "ITB"
+    - "JSON-LD"
+    - "LFDS-AP"
+    - "MLDCAT-AP"
+    - "m8g"
+    - "OpenML"
+    - "PURI"
+    - "RDF"
+    - "RDFS"
+    - "SEMIC"
+    - "SHACL"
+    - "skos"
+    - "SKOS"
+    - "UML"
+    - "W3C"
+    - "[A]"
+    - "[E]"
