@@ -6,7 +6,7 @@ input:
     # test that the terms under the namespace under control redirect to the fwd url
     fwd: 'https://semiceu.github.io/'
   specs:
-    - https://semiceu.github.io/uri.semic.eu-generated/CCCEV/releases/2.1.1/
+    - https://semiceu.github.io/Core-Location-Vocabulary/releases/2.1.1/
 response:
   types:
     - 'application/n-triples'
@@ -81,6 +81,7 @@ spell:
     - "OpenML"
     - "PURI"
     - "RDF"
+    - "rdfs"
     - "RDFS"
     - "SEMIC"
     - "SHACL"
@@ -90,3 +91,4 @@ spell:
     - "W3C"
     - "[A]"
     - "[E]"
+    - "FOAF"
